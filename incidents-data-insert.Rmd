@@ -26,6 +26,6 @@ conn <- dbConnect(drv, dbname = "portals",
 ```{r}
 incidents_insert <- readRDS("data/incidents_upload.rds")
 
-dbWriteTable(conn = conn, name = "temp_incidents_uploads", value = upload_id, overwrite = T)
+dbWriteTable(conn = conn, name = "temp_incidents_uploads", value = incidents_upload, overwrite = T)
 ```
 
