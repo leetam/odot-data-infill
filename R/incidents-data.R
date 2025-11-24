@@ -60,8 +60,8 @@ incidents_data_1 <- incidents |>
   )
 
 duplicates <- incidents_data_1[duplicated(incidents_data_1$incident_id), ]
-duplicates_all <- incidents_data_1 |>
-  filter(incident_id %in% duplicates$incident_id)
+duplicates_all <- incidents[duplicated(incidents)|duplicated(incidents, fromLast=TRUE),]
+write.csv(duplicates_all, "data/incidents_duplicates.csv", row.names = F)
 
 incidents_data_2 <- incidents_data_1[!duplicated(incidents_data_1), ]
 
@@ -71,6 +71,9 @@ no_incident_ids <- incidents_data_2 |>
 
 #### Vehicles file ####
 vehicles_1 <- vehicles[duplicated(vehicles), ]
+vehicles_dupes_all <- vehicles[duplicated(vehicles)|duplicated(vehicles, fromLast=TRUE), ]
+write.csv(vehicles_dupes_all, "data/vehicles_duplicates.csv", row.names = F)
+
 vehicles_2 <- vehicles[!duplicated(vehicles), ]
 vehicles_3 <- vehicles_2 |>
   group_by(EVNT_ID) |>

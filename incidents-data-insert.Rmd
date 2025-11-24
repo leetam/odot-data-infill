@@ -1,0 +1,31 @@
+---
+title: "insert-incidents-data"
+author: "Tammy"
+date: "2025-11-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(tidyr)
+library(keyring)
+library(RPostgreSQL)
+
+kb <- keyring_unlock("work_keys")
+kb$keyring_set_default("work_keys")
+
+drv <- dbDriver("PostgreSQL")
+conn <- dbConnect(drv, dbname = "portals",
+                 host = host, port = port,
+                 user = user, password = kb$get("portaldb"))
+
+```
+
+```{r}
+incidents_insert <- readRDS("data/incidents_upload.rds")
+
+dbWriteTable(conn = conn, name = "temp_incidents_uploads", value = upload_id, overwrite = T)
+```
+
