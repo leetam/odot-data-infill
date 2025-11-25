@@ -35,7 +35,7 @@ incidents_data_1 <- incidents |>
   select(
     incident_id = EventID,
     incident_type = EventTypeID,
-    subtype = EventSubtypeID,
+    sub_type = EventSubtypeID,
     create_time = CreationTime,
     clear_time = ClearTime,
     event_source = EventSource,
@@ -59,14 +59,22 @@ incidents_data_1 <- incidents |>
     max_vehicle_count = VehicleCount
   )
 
+
+
 duplicates <- incidents_data_1[duplicated(incidents_data_1$incident_id), ]
 duplicates_all <- incidents[duplicated(incidents)|duplicated(incidents, fromLast=TRUE),]
 write.csv(duplicates_all, "data/incidents_duplicates.csv", row.names = F)
 
 incidents_data_2 <- incidents_data_1[!duplicated(incidents_data_1), ]
 
+incidents_data_2$create_time <- ymd_hms(incidents_data_2$create_time, tz = "US/Pacific")
+incidents_data_2$clear_time <- ymd_hms(incidents_data_2$create_time, tz = "US/Pacific")
+incidents_data_2$recovery_begin_time <- ymd_hms(incidents_data_2$recovery_begin_time, tz = "US/Pacific")
+
 no_incident_ids <- incidents_data_2 |>
-  filter(is.na(subtype))
+  filter(is.na(sub_type))
+
+
 #193
 
 #### Vehicles file ####
